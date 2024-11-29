@@ -1,0 +1,81 @@
+{% extends 'silentmarket/market_base.html' %}
+
+{% block market_style %}
+<style type="text/css">
+    /* 자식 템플릿에서 스타일 추가 */
+    .product .display-4 {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #6c757d; /* 고요한 그레이 톤 */
+        margin-bottom: 20px;
+    }
+
+    .product .card-body p {
+        font-size: 1.2rem;
+        margin: 10px 0;
+    }
+
+    .product .img-fluid {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .product .card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .product .card:hover {
+        transform: scale(1.03);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .product .card-body p strong {
+        color: #d9534f; /* 가격 강조 (붉은색) */
+    }
+
+    .product .card-body p {
+        color: #5bc0de; /* 카테고리 파란색 */
+    }
+
+    .product .container {
+        background-color: #f9f9f9;
+        padding-top: 50px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5 product">
+        <div class="row">
+            <!-- 왼쪽: 상품 정보 -->
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h1 class="display-4">{{ product.title }}</h1>
+                        <p class="lead"><strong>판매자:</strong> {{ product.user }}</p>
+                        <p><strong>가격:</strong> {{ product.price }} 원</p>
+                        <p><strong>카테고리:</strong> {{ product.category }}</p>
+                        <p><strong>판매 상태:</strong> {{ product.get_status_display }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 오른쪽: 상품 이미지 -->
+            <div class="col-md-4">
+                <h3 class="mb-4">상품 이미지</h3>
+                <div class="row">
+                    {% for img in product_imgs %}
+                        <div class="col-12 mb-3">
+                            <img src="{{ img.url }}" alt="{{ product.title }}"  width="200px" height="auto" />
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

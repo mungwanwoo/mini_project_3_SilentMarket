@@ -1,0 +1,165 @@
+{% extends 'silentmarket/market_base.html' %}
+
+{% block market_style %}
+<style>
+    body {
+        font-family: 'Nanum Gothic', sans-serif;
+        background-color: #f7f7f7; /* 부드러운 배경색 */
+        color: #555; /* 차분한 글자 색상 */
+    }
+
+    /* 네비게이션 바 */
+    .navbar {
+        background-color: #6c757d; /* 고요한 그레이 색상 */
+    }
+
+    .navbar-brand {
+        font-weight: bold;
+        color: white !important;
+        font-size: 1.5rem; /* 로고 크기 약간 증가 */
+    }
+
+    .navbar-nav .nav-link {
+        color: white !important;
+    }
+
+    .navbar-nav .nav-link:hover {
+        color: #f8f9fa !important;
+    }
+
+    /* 카테고리 스타일 */
+    .category-list {
+        margin-bottom: 20px;
+        font-size: 1.1rem;
+    }
+
+    .category-item {
+        margin-right: 15px;
+        display: inline-block;
+    }
+
+    .category-item a {
+        text-decoration: none;
+        color: #6c757d; /* 차분한 색상 */
+        font-weight: 500;
+    }
+
+    .category-item a:hover,
+    .category-item a.active {
+        text-decoration: underline;
+        font-weight: bold;
+        color: #495057; /* 클릭 시 강조된 색상 */
+    }
+
+    /* 상품 카드 */
+    .card {
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 부드러운 카드 그림자 */
+        transition: transform 0.3s ease-in-out;
+        margin-bottom: 20px;
+        background-color: #fff; /* 카드 배경 */
+    }
+
+    .card-body {
+        background-color: #ffffff; /* 카드 배경 */
+        padding: 20px;
+    }
+
+    .card-img-top {
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+    }
+
+    /* 카드 hover 효과 */
+    .card:hover {
+        transform: scale(1.05); /* 마우스 오버 시 카드 확대 */
+    }
+
+    .product-title {
+        font-weight: bold;
+        font-size: 1.2rem;
+        color: #495057; /* 고요한 느낌의 글자색 */
+    }
+
+    .product-price {
+        color: #6c757d;
+        font-size: 1.1rem;
+    }
+
+    /* 상품 목록 제목 */
+    h5.mb-0 {
+        font-weight: bold;
+        margin-bottom: 15px;
+        color: #333; /* 고요하고 깔끔한 제목 색상 */
+    }
+
+    /* 푸터 스타일 */
+    .footer {
+        background-color: #f1f1f1;
+        padding: 20px 0;
+        text-align: center;
+        color: #555;
+    }
+
+    .footer a {
+        color: #555;
+        text-decoration: none;
+    }
+
+    .footer a:hover {
+        color: #6c757d;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+
+            <!-- 카테고리 리스트 (클릭하면 해당 카테고리 상품만 보이도록 링크) -->
+            <div class="category-list">
+                <span class="category-item">
+                    <a href="{% url 'silentmarket:index' %}" {% if not category %}class="active"{% endif %}>전체보기</a>
+                </span>
+                {% for cat in category_list %}
+                <span class="category-item">
+                    <a href="{% url 'silentmarket:category_product_list' cat.id %}" {% if category.id == cat.id %}class="active"{% endif %}>{{ cat.name }}</a>
+                </span>
+                {% endfor %}
+            </div>
+
+            <!-- 카테고리 이름 출력 -->
+            <div class="row mt-4">
+                <h5 class="mb-0">
+                    {% if category %}
+                        {{ category.name }}
+                    {% else %}
+                        전체 게시글
+                    {% endif %}
+                </h5>
+
+                {% if products %}
+                    <div class="row">
+                        {% for product in products %}
+                        <div class="col-md-4 mb-4">
+                            <div class="card">
+                                <a href="{% url 'silentmarket:product_detail' product.id %}">
+                                   
+                                    <div class="card-body">
+                                        <h5 class="product-title">{{ product.title }}</h5>
+                                        <p class="product-price">{{ product.price }} 원</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p>해당 카테고리에는 상품이 없습니다.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
